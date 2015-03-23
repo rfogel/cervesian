@@ -1,4 +1,4 @@
 cervesian
 =========
 
-Avaliação de Cerveja
+Application restfull with Jersey + Javascript
