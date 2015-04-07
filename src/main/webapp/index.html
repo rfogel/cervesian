@@ -1,0 +1,414 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Cervisiam</title>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<link href="css/jquery-ui.css" rel="stylesheet">
+	<link href="css/cervisian.css" rel="stylesheet">
+	<link href="css/lightbox.css" rel="stylesheet" />
+	<script src="js/lightbox.min.js"></script>
+</head>
+<body>
+	<div id='header' class="sidebar" style="margin-bottom:5;height:8%;">
+		<div style="float: left;margin-left: 10px;">
+			<h1>Carpe Cervisiam</h1>
+		</div>
+		<div style="float: right;margin-top: 1%;margin-right: 2%">
+			<button id="add">Nova Cerveja</button>
+		</div>
+		<div style="float: left;margin-top: 1%;margin-left: 25%;font-size: 15">
+			<input style="font-size: 20" type="text">
+			<button style="font-size: 15;margin-bottom: 2%;" id="search">Buscar</button>
+		</div>
+	</div>
+	<div id='main' style="float:left;width:70%;height:90%">
+		<!-- <div style="text-align:center;" id="welcome-area"><img src="images/cervejas.jpg"></div> -->
+		<div id="search-area" style="padding-left:25px;padding-right:25px;display:none;"></div>
+		<div id="create-area" style="padding-left:25px;padding-right:25px;display:none;">
+			<h1>Nova Cerveja</h1>
+			<div style="padding-left:30px;padding-right:30px">	
+				<form id="form">
+					<h3>Nome</h3><input id="name" type="text" style="width:500px">
+					<h3>Tipo</h3>
+					
+					<select id="selectBrand">
+						<optgroup label="PALE LAGERS" style="font: italic;">
+							<option>PILSNER</option>
+							<option>AMERICAN LAGER</option>
+							<option>PREMIUM</option>
+						</optgroup>
+						<optgroup label="DARK LAGERS">
+							<option>SCHWARZBIER</option>
+							<option>MALZBIER</option>
+							<option>MUNCHNER DUNKEL</option>
+						</optgroup>
+						<option>BOCK</option>
+						<optgroup label="PALE ALES">
+							<option>AMERICAN PALE ALE</option>
+							<option>ENGLISH PALE ALE</option>
+						</optgroup>		
+						<optgroup label="AMBER/BROWN E RED ALE">	
+							<option>RED ALE</option>
+							<option>AMERICAN AMBER ALE</option>
+						</optgroup>		
+					</select>
+					
+					<h3>Avaliação</h3>
+					<div>
+						<img id="star1" class="star" src="images/star-off.png">
+						<img id="star2" class="star" src="images/star-off.png">
+						<img id="star3" class="star" src="images/star-off.png">
+						<img id="star4" class="star" src="images/star-off.png">
+						<img id="star5" class="star" src="images/star-off.png">
+					</div>
+					<div style="width:100%;height:100px">
+						<div style="float:left;width:30%">
+							<h3>Foto</h3>
+							<input id="photo" type="file">
+						</div>
+						<div style="float:left;width:70%">
+							<img id="preview" height="80" width="80">
+						</div>
+					</div>
+					<br>
+					<h3>Comentário</h3>
+					<textarea id="comment" style="width:100%;height:100px" ></textarea><br><br>
+					</form>
+					<button id="save" style="float:right;padding-right:5px">Salvar</button>				
+	   			</div>
+				
+		</div>
+	</div>
+	<div id='sidebar' class="sidebar" style="float:right;width:30%;height:89%">
+		<h1 align="center">Top 5</h1>
+	</div>
+	<div id='footer' style="clear:both;text-align:center">Desenvolvido por Rafael Fogel / Vanessa Pinheiro</div>
+</body>
+<script type="text/javascript">
+	$().ready(function() 
+	{
+    	console.log( "ready!" );
+    	
+    	$('#menubar').css('background-color', '#101010');
+    	$('#sidebar').css('background-color', '#101010');
+    	$('#header').css('background-color', '#101010');
+    	$('#footer').css('background-color', 'Green');
+
+    	$('div').css('color', 'white');
+    	$('body').css('background-color', 'black');
+
+
+		var avaliation = 0;
+		var $stars = $('.star');
+		$stars.hover(starHoverOn, starHoverOff);
+		$stars.on('click', function()
+		{
+			var $start = $(this).attr("id");
+			
+    		switch($start)
+    		{
+    			case "star1":
+        			if ( avaliation == 1 )
+            		{
+        				$(this).attr("src", "images/star-off.png");
+        				avaliation = 0;
+            		}
+        			else
+            		{
+                		$(this).attr("src", "images/star-on.png");
+    					avaliation = 1;
+                	}
+ 	  				$("#star2").attr("src", "images/star-off.png");
+    				$("#star3").attr("src", "images/star-off.png");
+    				$("#star4").attr("src", "images/star-off.png");
+    				$("#star5").attr("src", "images/star-off.png");
+    				break;
+    			case "star2":
+    				$("#star1").attr("src", "images/star-on.png");
+    				$("#star2").attr("src", "images/star-on.png");
+    				$("#star3").attr("src", "images/star-off.png");
+    				$("#star4").attr("src", "images/star-off.png");
+    				$("#star5").attr("src", "images/star-off.png");
+    				avaliation = 2;
+    				break;
+    			case "star3":
+    				$("#star1").attr("src", "images/star-on.png");
+    				$("#star2").attr("src", "images/star-on.png");
+    				$("#star3").attr("src", "images/star-on.png");
+    				$("#star4").attr("src", "images/star-off.png");
+    				$("#star5").attr("src", "images/star-off.png");
+    				avaliation = 3;
+    				break;
+    			case "star4":
+    				$("#star1").attr("src", "images/star-on.png");
+    				$("#star2").attr("src", "images/star-on.png");
+    				$("#star3").attr("src", "images/star-on.png");
+    				$("#star4").attr("src", "images/star-on.png");
+    				$("#star5").attr("src", "images/star-off.png");
+    				avaliation = 4;
+    				break;
+    			case "star5":
+    				$("#star1").attr("src", "images/star-on.png")
+    				$("#star2").attr("src", "images/star-on.png");
+    				$("#star3").attr("src", "images/star-on.png");
+    				$("#star4").attr("src", "images/star-on.png");
+    				$("#star5").attr("src", "images/star-on.png");
+    				avaliation = 5;
+    				break;
+    		}
+		});
+		
+    	$(".star").hover(starHoverOn, starHoverOff);
+	
+        var starHoverOn = function()
+        {
+    		if ( $(this).attr("id") == "star1" )
+            	window.alert("1");
+        	else
+        		window.alert("2");
+        };
+
+        var starHoverOff = function()
+        {
+        };
+
+    	var hoverOn = function() {
+    		$(this).find(".showOnSelected").fadeIn(); 
+    		$(this).addClass("hovering");
+    	};
+    	var hoverOff = function() {
+    		$(this).find(".showOnSelected").fadeOut(); 
+    		$(this).removeClass("hovering");
+    	};
+
+    	var removeWelcomePage = function() {
+			$("#welcome-area").hide();        	
+        }
+
+        var openSearchArea = function() {
+            $("#search-area").show();
+            $("#create-area").hide();
+            removeWelcomePage();
+        } 
+
+        var openCreateArea = function() {
+            $("#create-area").show();
+            $("#search-area").hide();
+            removeWelcomePage();
+        }
+
+		
+    	$("#add").button();
+    	$("#search").button();
+    	$("#save").button();
+    	$("#selectBrand").selectmenu();
+
+    	$("#search").on('click', function()
+    	{
+    		clearForm();
+    		openSearchArea();
+    		
+    		$.ajax({
+			  url: "rest/cervisiamController/get/cerveja",
+			  dataType: "json",
+			  type: "GET"
+			}).done(function(data) 
+			{
+				var $cervejas = $("<table />");
+
+				var $header = $("<thead />").append($("<tr />")
+								.append($("<th />"))
+								.append($("<th />").text("Nome"))
+								.append($("<th />").text("Tipo"))
+								.append($("<th />").text("Estrela"))
+								.append($("<th />")));
+				
+				$cervejas.append($header);	
+
+				var numCervejas = 0;
+				
+				$.each( data, function( key, val ) 
+				{
+					var photo = (val.image) ? "rest/cervisiamController/image/" + val.image : "images/default.png";
+					
+				    var $cerveja = $("<tr />").append($("<th />").append($("<a />").attr("data-lightbox", photo).attr("href",photo).attr("rel","group").append($("<img />").attr("src", photo).css("width", 52))))
+				    						  .append($("<th />").text(val.name))
+				    						  .append($("<th />").text(val.brand));
+				    						  
+					switch(val.star)
+					{
+						case 0: break;
+						case 1:
+							$cerveja.append($("<th />").append($("<img/>").attr("src", "images/star-on.png")));
+							break
+						case 2:
+							$cerveja.append($("<th />").append($("<img/>").attr("src", "images/star-on.png"))
+													   .append($("<img/>").attr("src", "images/star-on.png")));
+							break
+						case 3:
+							$cerveja.append($("<th />").append($("<img/>").attr("src", "images/star-on.png"))
+													   .append($("<img/>").attr("src", "images/star-on.png"))	
+									   				   .append($("<img/>").attr("src", "images/star-on.png")));
+			   				break;
+						case 4:
+							$cerveja.append($("<th />").append($("<img/>").attr("src", "images/star-on.png"))
+									   .append($("<img/>").attr("src", "images/star-on.png"))
+									   .append($("<img/>").attr("src", "images/star-on.png"))		
+					   				   .append($("<img/>").attr("src", "images/star-on.png")));
+							break;
+						case 5:
+							$cerveja.append($("<th />").append($("<img/>").attr("src", "images/star-on.png"))
+									   .append($("<img/>").attr("src", "images/star-on.png"))
+									   .append($("<img/>").attr("src", "images/star-on.png"))
+									   .append($("<img/>").attr("src", "images/star-on.png"))			
+					   				   .append($("<img/>").attr("src", "images/star-on.png")));
+							break;
+					}
+
+					var deleteCerveja = function()
+					{
+						createDialog4Delete($(this).attr("id")).dialog("open");
+					} 
+					
+					$cerveja.append($("<th />").append($("<img />").attr("src", "images/delete.png").attr("id", val.id).on("click", deleteCerveja)));
+					  	
+				    $cerveja.hover(hoverOn, hoverOff);
+				    
+				    $cervejas.append($cerveja);		
+
+				    numCervejas++;    
+				}); 
+
+				var header = ($("<h1 />").text(numCervejas + " cervejas encontradas"));
+							    				
+			  	$("#search-area").html(header).append($cervejas);
+			});
+
+    	});
+
+    	$("#add").on('click', function()
+	   	{
+    		openCreateArea();   			
+	   	});
+
+	   	var photo;
+
+    	document.querySelector('input[type="file"]').addEventListener('change', function(e) 
+    	{
+        	photo = this.files[0];
+
+        	var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(photo);	  
+   		}, false);
+
+   		var createDialog = function(data)
+   		{
+   			var $dialog = $("<div />").attr("title", "Cervisian")
+
+			$dialog.append("<p />").text(data);
+
+			$dialog.dialog({
+				autoOpen: false,
+				width: 600,
+				buttons: [
+					{
+						text: "Ok",
+						click: function() {
+							$( this ).dialog("close");
+						}
+					},
+				]
+			});
+
+			return $dialog;
+   	   	}
+
+   		var createDialog4Delete = function(id)
+   		{
+   			var $dialog = $("<div />").attr("title", "Cervisian")
+
+			$dialog.append("<p />").text("Deseja excluir?");
+
+			$dialog.dialog({
+				autoOpen: false,
+				width: 600,
+				buttons: [
+					{
+						text: "Confirmar",
+						click: function() 
+						{
+							$( this ).dialog("close");
+							$.ajax({
+						   		  url: 'rest/cervisiamController/delete/' + id,
+						   		  type: "DELETE",
+						   		  processData: false,
+						   		  contentType: false,
+						   		  success: function(data)
+						   		  {	   			
+										createDialog(data).dialog("open");
+					  			  
+										$("#search").trigger('click');
+							   	  }
+						   	});
+						}
+					},
+					{
+						text: "Cancelar",
+						click: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				]
+			});
+
+			return $dialog;
+   	   	}
+
+   	   	var clearForm = function()
+   	   	{
+	   	   	$("#form").trigger("reset");
+			$("#preview").removeAttr("src");
+	
+			var $stars = $('.star');
+			$.each($stars, function()
+		   	{
+			   	$(this).attr("src", "images/star-off.png");
+	   		})
+   	   	}
+
+	   	$("#save").on('click', function()
+	    {
+	   		var formData = new FormData();
+
+	   		var file = $("#photo");
+
+			var $name = $('#name').val()
+	   		
+	   		formData.append('name', $name);
+	   		formData.append('photo', photo);
+	   		formData.append('brand', $('#selectBrand').val());
+	   		formData.append('avaliation', avaliation);
+	   		formData.append('comment', $('#comment').val());
+	   		
+	   		$.ajax({
+	   		  url: 'rest/cervisiamController/save',
+	   		  type: "POST",
+	   		  data: formData,
+	   		  processData: false,
+	   		  contentType: false,
+	   		  success: function(data)
+	   		  {	   			
+					createDialog(data).dialog("open");
+					clearForm();
+	   		  }   		  	
+	   		});
+		});
+	});
+</script>
+</html>
